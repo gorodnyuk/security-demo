@@ -30,12 +30,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable() //авторизация фронта. говоярт в крупных приложениях не нужен :)
+                .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN") //...одна роль
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER") //...список ролей
 //                .antMatchers("/all-auth-users").authenticated() //все залогиненые
                 .antMatchers("/**", "/hello").permitAll() // все //.anonymous?
                 .and()
-                .formLogin();
+                .formLogin()
+                .and()
+                .logout();
     }
 }
